@@ -8,7 +8,7 @@ Sainsbury Wellcome Centre.
 It contains material for attending the course, and also all materials for the production
 of course figures / animations for those interested.
 
-### Materials related to attending the course:
+## Materials related to attending the course:
 
 - environment_check.py : Run this python script to ensure your environment is setup correctly. 
 			 The script contains a list of dependencies that need to be installed.
@@ -19,18 +19,18 @@ of course figures / animations for those interested.
 
 
 
-### Materials related to development of the course:
+## Materials related to development of the course:
 
-walkthrough/
+#### walkthrough/
 
 This folder contains a complete walkthrough of the course (i.e. working copy of all 
 code that will be written during the course)
 
-figures/ and animations/
+#### figures/ and animations/
 
 code for producing the figures and animations from the course
 
-data_generation/ 
+#### data_generation/ 
 
 the data used in the course was generated from real data. These
 scritps take the raw data (two recordings, one with and one without drug),
