@@ -1,8 +1,10 @@
+"""
+make a 3 x 2 subplot of sine and cosine at different frequencies (1, 2, 10 Hz)
+and a plot of a sine wave at different amplitudes (1, 2, 4) as well
+as the magnitude vs. amplitude of a sine wave.
+"""
 import numpy as np
-from scipy import signal
 import matplotlib.pyplot as plt
-import pandas as pd
-import seaborn as sn
 
 
 # Frequencies
@@ -25,7 +27,7 @@ axes[2, 0].set_xlabel("Time (s)")
 axes[2, 1].set_xlabel("Time (s)")
 
 plt.tight_layout()
-#plt.show()
+plt.show()
 
 # Amplitude and Magnitujde
 
@@ -47,5 +49,6 @@ axes[1].plot(n, np.abs(1 * np.sin(2 * np.pi * n)))
 axes[0].set_title("Magnitude = np.abs(Amplitude) =      ")
 plt.legend(["Amplitude", "Magnitude"])
 plt.tight_layout()
+
 plt.show()
 

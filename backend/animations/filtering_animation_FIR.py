@@ -1,13 +1,32 @@
+"""
+Create an animation of a FIR filter implementation. A caveat, the 
+input signal is not reversed, but apart from this it is convolution
+(and, if you imagine the signal has already been reversed, it is a convolution).
+
+Show with high pass or low pass FIR coefficients, Option to plot
+the DFT of the signal, save as GIF or MP4.
+
+NOTES:
+as per DSP convention, n is the full signal index array (e.g. x(n))
+and N is the num_samples.
+
+Ideally, the stem plot should be updated at data
+level with set_ydata. This works well for the markers but the
+line need to be redrawn, in a convoluted way, so for convenience.
+just re-plot. This might cause speed issues but does not matter
+as saving to mp4 / gif.
+"""
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
-import os
 
-filter_type = "high_pass"  # high_pass or low_pass
-plot_ffts = True
-save_animation = True
+filter_type = "low_pass"  # high_pass or low_pass
+plot_dft = True
+save_animation = False
 save_fps = 180
 gif_or_mp4 = "gif"
+
+# Setup PLots
 
 fig, axes = plt.subplots(3, 1)
 ax1, ax2, ax3 = axes
@@ -28,6 +47,8 @@ def setlimits(lims, N, filt_N):
     ax3.set_ylim(-lims, lims)
 
 def init():
+    """ Required to stop animate adding +1 to iteration.
+    Should move plot setup here, but lead to weird flickering"""
     pass
 
 if filter_type == "high_pass":
@@ -37,13 +58,15 @@ elif filter_type == "low_pass":
 else:
     raise BaseException("Filter type must be high_pass or low_pass")
 
+# Setup filter coefficients and n
 N = 50
 filt_N = len(filter_coefs)
-MAIN_N = N + 2 * filt_N - 2
-MAIN_n = np.arange(-filt_N + 1, N + filt_N - 1)
-filter = np.zeros(MAIN_N)
+main_N = N + 2 * filt_N - 2
+main_n = np.arange(-filt_N + 1, N + filt_N - 1)
+filter = np.zeros(main_N)
 filter[:filt_N] = filter_coefs
 
+# Setup signal
 n = np.linspace(0, 1, N)
 signal = (50 * np.sin(2*np.pi*n*100) +
           3 * np.sin(2*np.pi*n*72) +
@@ -52,8 +75,10 @@ signal = (50 * np.sin(2*np.pi*n*100) +
 
 signal = np.r_[(filt_N - 1) * [np.NaN], signal, (filt_N - 1) * [np.NaN]]
 
-ax1_lines = ax1.plot(MAIN_n, signal, '-o', c="k", markevery=[filt_N - 1])
-a2_stem = ax2.stem(MAIN_n, filter, basefmt="k", linefmt="k")
+# Setup plots
+
+ax1_lines = ax1.plot(main_n, signal, '-o', c="k", markevery=[filt_N - 1])
+a2_stem = ax2.stem(main_n, filter, basefmt="k", linefmt="k")
 plt.setp(a2_stem[0], "markerfacecolor", "#1f77b4", "markeredgewidth", 0.5)
 
 ax3_lines = ax3.plot([], [], c="#1f77b4")
@@ -63,32 +88,35 @@ setlabels()
 setlimits(lims, N, filt_N)
 fig.tight_layout()
 
-output = np.empty(MAIN_N) 
+output = np.empty(main_N) 
 output.fill(np.NaN)
 
 def animate(i):
-
-    filter = np.zeros(MAIN_N)
+    """
+    Update the first plot (raw signal, position of the pointwise multiplication)
+    second plot (filter coefficient position) and third plot (filtered signal).
+    """
+    filter = np.zeros(main_N)
     filter[i:i+filt_N] = filter_coefs
 
+    ax1.clear()
     ax2.clear()
-    a2_stem = ax2.stem(MAIN_n, filter, basefmt="k", linefmt="k")
+
+    ax1.plot(main_n, signal, '-o', c="k", markevery=range(i, i+filt_N))
+
+    a2_stem = ax2.stem(main_n, filter, basefmt="k", linefmt="k")
     plt.setp(a2_stem[0], "markerfacecolor", "#1f77b4", "markeredgewidth", 0.5)
 
-    ax1.clear()
-    ax1.plot(MAIN_n, signal, '-o', c="k", markevery=range(i, i+filt_N))  # hard to update this with set_data()
-
     output[i + filt_N - 1] = np.nansum(filter * signal)
-
-    ax3_lines[0].set_data(MAIN_n, output)  
+    ax3_lines[0].set_data(main_n, output)  
 
     setlabels()
     setlimits(lims, N, filt_N)
 
-    if i == MAIN_N - filt_N:
+    if i == main_N - filt_N:
         ani.event_source.stop()
 
-ani = animation.FuncAnimation(fig, animate, frames=range(0, MAIN_N - filt_N + 1), interval=5, init_func=init)
+ani = animation.FuncAnimation(fig, animate, frames=range(0, main_N - filt_N + 1), interval=5, init_func=init)
 
 if save_animation:
     if gif_or_mp4 == "gif":
@@ -101,7 +129,7 @@ else:
 
 assert np.sum(~np.isnan(output)) == N + filt_N - 1  # sanity check on 'convolution' (not flipped) output size N + K - 1
 
-if plot_ffts:
+if plot_dft:
 
     fig, axes = plt.subplots(1, 2)
     freqs = np.fft.rfftfreq(N, 1 / N)

@@ -1,9 +1,9 @@
+"""
+Show the evolution of the sine and cosine function. Meant to be
+companion to unit circle example.
+"""
 import numpy as np
-from scipy import signal
 import matplotlib.pyplot as plt
-import pandas as pd
-import seaborn as sn
-from basic_units import radians, degrees, cos
 
 N = 10000
 n = np.linspace(0, 2 * np.pi, N)

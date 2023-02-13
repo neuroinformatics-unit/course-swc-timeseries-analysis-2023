@@ -1,3 +1,7 @@
+"""
+Generate a 4x2 subplot of sine waves at 1-6, 5000 and 10000 Hz
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -6,7 +10,7 @@ n = np.linspace(0, 1, N)
 
 fix, axes = plt.subplots(4, 2)
 
-for pos, freq in zip([[0, 0], [0, 1], [1, 0], [1, 1], [2, 0], [2, 1], [3, 0], [3,1]],
+for pos, freq in zip([[0, 0], [0, 1], [1, 0], [1, 1], [2, 0], [2, 1], [3, 0], [3, 1]],
                      [1,      2,      3,      4,      5,     6,      5000, 10000]):
 
     axes[pos[0], pos[1]].plot(n, np.sin(2 * np.pi * n * freq))

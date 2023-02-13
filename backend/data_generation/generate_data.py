@@ -1,15 +1,22 @@
-# Data Creation
-# cell5-pre-drug, remove stimulus, take first 60 seconds, save as CSV
-# cell3-cch, remove stimulus, take first 60 seconds
+"""
+Script to create data for timeseries analysis course from raw data. This will
+load the pre-drug and post-drug files and adjust the baseline so they
+can be concatenated together.
 
-# annoying warning in older pycharm: https://youtrack.jetbrains.com/issue/PY-56361/FutureWarning-pandas.Series.iteritems-in-pydevdutils.py
+cell5-pre-drug, remove stimulus, take first 60 seconds, save as CSV
+cell3-cch, remove stimulus, take first 60 seconds
+
+NOTES:
+
+annoying warning in older pycharm: https://youtrack.jetbrains.com/issue/PY-56361/FutureWarning-pandas.Series.iteritems-in-pydevdutils.py
+"""
 
 import pandas as pd
 from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-repo_path = Path(r"C:\fMRIData\git-repo\swc_timeseries_course")
+repo_path = Path(r"C:\Users\Joe\work\git-repos\swc-timeseries-analysis-course-2023\backend\data_generation")
 pre_drug = pd.read_csv(repo_path / "cell5-predrug-cut.csv")
 post_drug = pd.read_csv(repo_path / "cell3-cch-cut.csv", )
 

@@ -1,3 +1,7 @@
+"""
+Plot the negative sine and cosine functions
+and their DFT phases.
+"""
 import matplotlib.pyplot as plt
 import numpy as np
 

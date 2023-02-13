@@ -1,3 +1,6 @@
+"""
+Compare the analogue and digital butterworth filter PSD
+"""
 from scipy import signal
 import matplotlib.pyplot as plt
 import numpy as np

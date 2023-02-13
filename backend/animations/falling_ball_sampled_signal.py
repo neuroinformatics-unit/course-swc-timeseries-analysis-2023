@@ -1,13 +1,22 @@
+"""
+Make an animation in which the position of a falling ball is sampled discretely.
+This can be over the continuous signal (show line) or not.
+
+see falling_ball_continuous_signal.py for more details. This script is very
+similar and should be refactored to reduce code reuse.
+"""
+
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
-# https://stackoverflow.com/questions/44938231/animating-a-stem-plot-in-matplotlib
+
 fig, axes = plt.subplots(1, 2)
 show_line = False
 
-save_animation = True
+save_animation = False
 save_fps = 5
 
+# Setup plots
 ax1, ax2 = axes
 h_stem = ax1.stem(0, 1, linefmt="w", markerfmt="#1f77b4")
 h_stem[0].set_markersize(10)
@@ -23,12 +32,13 @@ ax2.set_xlabel("Time (s)")
 ax2.set_ylim(0, 1)
 ax2.set_xlim(0, 1)
 
+
+line, = ax2.plot([], [], lw=2, c="k")
+
+# Initialise and run animation
 iter = np.linspace(0, 1, 48)
 running_stem_time = []
 running_stem_data = []
-import time
-
-line, = ax2.plot([], [], lw=2, c="k")
 
 def run(i):
     h_stem[0].set_ydata(1 - iter[i])
@@ -44,8 +54,6 @@ def run(i):
 
     if 1 - iter[i] == 0:
         ani.event_source.stop()
-
-
 
 def data_gen():
     for i in reversed(np.linspace(0, 1, 48)):
