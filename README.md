@@ -5,8 +5,8 @@
 This repo contains materials for the course Timeseries analysis in Python (2023) at the 
 Sainsbury Wellcome Centre.
 
-It contains material for attending the course, and also all materials for the production
-of course figures / animations for those interested.
+It contains material for attending the course as well as all materials for the production
+of course figures / animations.
 
 ## Materials related to attending the course:
 
