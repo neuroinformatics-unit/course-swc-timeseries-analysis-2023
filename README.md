@@ -28,10 +28,10 @@ code that will be written during the course)
 
 #### figures/ and animations/
 
-code for producing the figures and animations from the course
+Code for producing the figures and animations from the course
 
 #### data_generation/ 
 
-the data used in the course was generated from real data. These
+The data used in the course was generated from real data. These
 scritps take the raw data (two recordings, one with and one without drug),
 concatenates them and adds high frequency noise.
