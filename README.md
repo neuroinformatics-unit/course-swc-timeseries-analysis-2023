@@ -1,6 +1,6 @@
 # Introduction to timeseries analysis in Python (2023)
 
-Link to the slides (online version): https://docs.google.com/presentation/d/1auKX6nvKOJgY_fg_Su7TFEesEQs9YK7aesjoYnJAGy8/edit?usp=sharing
+[Link to the slides (online version)](https://docs.google.com/presentation/d/1auKX6nvKOJgY_fg_Su7TFEesEQs9YK7aesjoYnJAGy8/edit?usp=sharing)
 
 This repo contains materials for the course Timeseries analysis in Python (2023) at the 
 Sainsbury Wellcome Centre.
