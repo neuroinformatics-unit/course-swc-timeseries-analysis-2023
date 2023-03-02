@@ -112,7 +112,7 @@ if show_all_plots:
     # Check the frequency response of the filter
     filter_response_freqs, filter_response_h = scipy.signal.freqz(b, a, fs=sampling_rate, worN=5000)
 
-    plotters.show_line_plot(filter_response_freqs, np.abs(filter_response_h), # 20 * np.log10(filter_response_h) for decibels
+    plotters.show_line_plot(filter_response_freqs, np.abs(filter_response_h), # 20 * np.log10(np.abs(filter_response_h)) for dB
                             "Frequency (Hz)", "Frequency Attenuation", "2nd order butter response")
 
 
