@@ -35,12 +35,32 @@ repo_path = Path(r"C:\Users\Joe\work\git-repos\swc-timeseries-analysis-course-20
 pandas_dataframe = pd.read_csv(repo_path / "sub-001_drug-cch_rawdata.csv")
 
 raw_signal = pandas_dataframe["current_pa"].to_numpy()
+demean_signal = raw_signal - np.mean(raw_signal)
 time_s = pandas_dataframe["time_s"].to_numpy()
 
 # Plot the data
-plt.plot(np.arange(raw_signal.size), raw_signal)
+plt.plot(np.arange(demean_signal.size), demean_signal)
 plt.ylabel("Current (pA)")
 plt.xlabel("Samples (million)")
+plt.title(" Raw Signal")
+plt.show()
+
+# ======================================================================================================================
+# Subset data plot (Major DRY)
+# ======================================================================================================================
+repo_path = Path(r"C:\Users\Joe\work\git-repos\swc-timeseries-analysis-course-2023")
+
+pandas_dataframe = pd.read_csv(repo_path / "sub-001_drug-cch_rawdata.csv")
+
+raw_signal = pandas_dataframe["current_pa"].to_numpy()
+demean_signal = raw_signal - np.mean(raw_signal)
+time_s = pandas_dataframe["time_s"].to_numpy()
+
+# Plot the data
+sub_signal = demean_signal[700000:710000]
+plt.plot(np.arange(sub_signal.size) / sub_signal.size, sub_signal)
+plt.ylabel("Current (pA)")
+plt.xlabel("Time (s)")
 plt.title(" Raw Signal")
 plt.show()
 
