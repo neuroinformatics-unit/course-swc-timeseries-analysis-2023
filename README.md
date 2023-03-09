@@ -35,3 +35,11 @@ Code for producing the figures and animations from the course
 The data used in the course was generated from real data. These
 scritps take the raw data (two recordings, one with and one without drug),
 concatenates them and adds high frequency noise.
+
+## Additional Materials
+
+[3 Blue One Brown Fourier Transform Video](https://www.youtube.com/watch?v=spUNpyF58BY)
+
+[Being 'comfortable in confusion'](https://j2kun.svbtle.com/mathematicians-are-chronically-lost-and-confused)
+
+[History of the Fourier transform](https://www.scientificamerican.com/article/the-fourier-transform/)

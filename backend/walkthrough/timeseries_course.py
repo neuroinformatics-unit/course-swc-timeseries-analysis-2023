@@ -5,10 +5,8 @@ import matplotlib.pyplot as plt
 import scipy
 import seaborn as sns
 
-import plotters
-
-show_all_plots = False
-repo_path = Path(r"C:\Users\Joe\work\git-repos\swc-timeseries-analysis-course-2023")
+show_all_plots = True
+repo_path = Path("/home/joe/git-repos/swc-timeseries-analysis-course-2023")  #  Path(r"C:\Users\Joe\work\git-repos\swc-timeseries-analysis-course-2023")
 
 # ======================================================================================================================
 # Load the data
@@ -50,6 +48,18 @@ print(time_s[bad_m1_index][0])           # 0.0001
 # assert np.allclose(time_s, method_1_time, rtol=0, atol=1e-15)  # FAIL
 
 # ======================================================================================================================
+# Plotting Function
+# ======================================================================================================================
+
+def show_line_plot(x, y, xlabel="", ylabel="", title=""):
+   """ Make and show a matplotlib lineplot """
+   plt.plot(x, y)
+   plt.ylabel(ylabel)
+   plt.xlabel(xlabel)
+   plt.title(title)
+   plt.show()
+
+# ======================================================================================================================
 # Take the FFT
 # ======================================================================================================================
 
@@ -69,11 +79,11 @@ scale_magnitude_fft = magnitude_fft * 2 / num_samples
 
 if show_all_plots:
 
-    plotters.show_line_plot(x=freqs,
-                            y=scale_magnitude_fft,
-                            xlabel="Frequency (Hz)",
-                            ylabel="Scaled Magnitude",
-                            title="Demeaned Signal Frequency Spectrum")
+    show_line_plot(x=freqs,
+                   y=scale_magnitude_fft,
+                   xlabel="Frequency (Hz)",
+                   ylabel="Scaled Magnitude",
+                   title="Demeaned Signal Frequency Spectrum")
 
     plt.stem(freqs[:1000],
              scale_magnitude_fft[:1000],
@@ -102,18 +112,18 @@ filt_signal_fft = np.fft.fft(signal_filtered)
 filt_magnitude_fft = np.abs(filt_signal_fft) * 2 / num_samples
 
 if show_all_plots:
-    plotters.show_line_plot(freqs,
-                            filt_magnitude_fft,
-                            "Frequency (Hz)", "Scaled Magnitude", "2nd order filtered signal")
+    show_line_plot(freqs,
+                   filt_magnitude_fft,
+                   "Frequency (Hz)", "Scaled Magnitude", "2nd order filtered signal")
 
-    plotters.show_line_plot(time_s,
-                            signal_filtered, "Time (s)", "Current (pA)", "2nd order filtered signal")
+    show_line_plot(time_s,
+                   signal_filtered, "Time (s)", "Current (pA)", "2nd order filtered signal")
 
     # Check the frequency response of the filter
     filter_response_freqs, filter_response_h = scipy.signal.freqz(b, a, fs=sampling_rate, worN=5000)
 
-    plotters.show_line_plot(filter_response_freqs, np.abs(filter_response_h), # 20 * np.log10(np.abs(filter_response_h)) for dB
-                            "Frequency (Hz)", "Frequency Attenuation", "2nd order butter response")
+    show_line_plot(filter_response_freqs, np.abs(filter_response_h), # 20 * np.log10(np.abs(filter_response_h)) for dB
+                   "Frequency (Hz)", "Frequency Attenuation", "2nd order butter response")
 
 
 # ======================================================================================================================
@@ -132,18 +142,18 @@ signal_filtered = scipy.signal.sosfiltfilt(sos, signal_demean)
 filter_response_freqs, filter_response_h = scipy.signal.sosfreqz(sos, fs=sampling_rate, worN=5000)
 
 if show_all_plots:
-    plotters.show_line_plot(filter_response_freqs, np.abs(filter_response_h),
-                            "Frequency (Hz)", "Frequency Attenuation", "16th order butter response")
+    show_line_plot(filter_response_freqs, np.abs(filter_response_h),
+                   "Frequency (Hz)", "Frequency Attenuation", "16th order butter response")
 
     # Check the DFT
     filt_signal_fft = np.fft.fft(signal_filtered)
     filt_magnitude_fft = np.abs(filt_signal_fft) * 2 / num_samples
 
-    plotters.show_line_plot(freqs, filt_magnitude_fft,
-                            "Frequency (Hz)", "Scaled Magnitude", "16th order Filtered Signal")
+    show_line_plot(freqs, filt_magnitude_fft,
+                   "Frequency (Hz)", "Scaled Magnitude", "16th order Filtered Signal")
 
-    plotters.show_line_plot(time_s,  signal_filtered,
-                            "Time (s)", "Current (pA)", "16th order filtered signal")
+    show_line_plot(time_s,  signal_filtered,
+                   "Time (s)", "Current (pA)", "16th order filtered signal")
 
 
 # ======================================================================================================================
@@ -188,17 +198,17 @@ signal_filtered.setflags(write=False)
 
 # Look at the flipped signal
 if show_all_plots:
-    plotters.show_line_plot(pre_drug_time,
-                            pre_drug * -1,
-                            "Time (s)",
-                            "Current (pA)",
-                            "Flipped pre-drug signal")
+    show_line_plot(pre_drug_time,
+                   pre_drug * -1,
+                   "Time (s)",
+                   "Current (pA)",
+                   "Flipped pre-drug signal")
 
-    plotters.show_line_plot(post_drug_time,
-                            post_drug * -1,
-                            "Time (s)",
-                            "Current (pA)",
-                            "Flipped post-drug signal")
+    show_line_plot(post_drug_time,
+                   post_drug * -1,
+                   "Time (s)",
+                   "Current (pA)",
+                   "Flipped post-drug signal")
 
 results = {}
 
@@ -242,21 +252,26 @@ if show_all_plots:
 # ======================================================================================================================
 # Note we could also set the column titles to appear as we want them in our Seaborn plots
 
-pre_drug_results = {
-    "peak_times":  pre_drug_time[peaks_idx_pre_drug],
-    "peak_im": pre_drug[peaks_idx_pre_drug],
-    "inter_event_interval": np.diff(pre_drug_time[peaks_idx_pre_drug]),
-}
+headers = ["peak_time", "amplitude", "inter_event_interval"]
 
-post_drug_results = {
-    "peak_times":  post_drug_time[peaks_idx_post_drug],
-    "peak_im": post_drug[peaks_idx_post_drug],
-    "inter_event_interval": np.diff(post_drug_time[peaks_idx_post_drug]),
-}
+pre_drug_event_times = pre_drug_time[peaks_idx_pre_drug]
+pre_drug_event_amplitudes = pre_drug[peaks_idx_pre_drug]
+pre_drug_inter_event_intervals = np.diff(pre_drug_time[peaks_idx_pre_drug])
 
-# Initialise dataframe in this way to handle uneven column lengths
-pre_drug_pd = pd.DataFrame.from_dict(pre_drug_results, orient="index").T
-post_drug_pd = pd.DataFrame.from_dict(post_drug_results, orient="index").T
+pre_drug_pd = pd.DataFrame([pre_drug_event_times,
+                            pre_drug_event_amplitudes,
+                            pre_drug_inter_event_intervals],
+                           index=headers).T
+
+post_drug_event_times = post_drug_time[peaks_idx_post_drug]
+post_drug_event_amplitudes = post_drug[peaks_idx_post_drug]
+post_drug_inter_event_intervals = np.diff(post_drug_time[peaks_idx_post_drug])
+
+
+post_drug_pd = pd.DataFrame([post_drug_event_times,
+                             post_drug_event_amplitudes,
+                             post_drug_inter_event_intervals],
+                            index=headers).T
 
 pre_drug_pd["condition"] = "pre_drug"
 post_drug_pd["condition"] = "post_drug"
@@ -269,17 +284,7 @@ results = pd.concat([pre_drug_pd, post_drug_pd])
 if show_all_plots:
     sns.set_theme()
 
-    sns.ecdfplot(data=results[["inter_event_interval", "condition"]].dropna(),
-                 x="inter_event_interval",
-                 hue="condition", palette="pastel")
-    plt.ylim(0, 1.1)
-    plt.ylabel("Cumulative Probability")
-    plt.xlabel("Inter-event interval (s)")
-    plt.show()
-
-    sns.set_style("whitegrid")
-
-    sns.barplot(data=results, x="condition", y="peak_im", errorbar="se")
+    sns.barplot(data=results, x="condition", y="amplitude", errorbar="se")
     plt.ylabel("Peak Current (pA)")
     ax = plt.gca()  # this is an example of matplotlib's annoying syntax. plt has no equivalent  function to set_xticklabels()
                     # (.xticks() is closest but requires passing the existing ticks back into the function which is not nice).
@@ -289,10 +294,22 @@ if show_all_plots:
 
     sns.set_style("dark")
 
-    sns.violinplot(data=results, x="condition", y="peak_im", width=0.4)
+
+    sns.violinplot(data=results, x="condition", y="amplitude", width=0.4)
     plt.ylabel("Peak Current (pA)")
     ax = plt.gca()
     ax.set_xticklabels(labels=["Pre-drug", "Post-drug"])
     plt.show()
 
     results.to_csv(repo_path / "sub-001_drug-cch_results.csv")
+
+
+    sns.ecdfplot(data=results[["inter_event_interval", "condition"]].dropna(),
+                 x="inter_event_interval",
+                 hue="condition", palette="pastel")
+    plt.ylim(0, 1.1)
+    plt.ylabel("Cumulative Probability")
+    plt.xlabel("Inter-event interval (s)")
+    plt.show()
+
+    sns.set_style("whitegrid")
