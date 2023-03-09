@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import scipy
 import seaborn as sns
 
-show_all_plots = True
+show_all_plots = False
 repo_path = Path("/home/joe/git-repos/swc-timeseries-analysis-course-2023")  #  Path(r"C:\Users\Joe\work\git-repos\swc-timeseries-analysis-course-2023")
 
 # ======================================================================================================================
@@ -219,33 +219,33 @@ peaks_idx_pre_drug = scipy.signal.find_peaks(
     pre_drug * -1,
     distance=distance_between_peaks_in_samples,
     height=20,
-    prominence=20
+    threshold=5
 )[0]
 
 peaks_idx_post_drug = scipy.signal.find_peaks(post_drug * -1,
                                               distance=distance_between_peaks_in_samples,
                                               height=20,
-                                              prominence=20)[0]
+                                              threshold=5)[0]
 
 # Plot the results
-if show_all_plots:
-    plt.plot(pre_drug_time, pre_drug)
-    plt.scatter(pre_drug_time[peaks_idx_pre_drug],
-                pre_drug[peaks_idx_pre_drug],
-                c="red")
-    plt.title("Pre-drug peaks")
-    plt.xlabel("Time")
-    plt.ylabel("Current (pA)")
-    plt.show()
+# if show_all_plots:
+plt.plot(pre_drug_time, pre_drug)
+plt.scatter(pre_drug_time[peaks_idx_pre_drug],
+            pre_drug[peaks_idx_pre_drug],
+            c="red")
+plt.title("Pre-drug peaks")
+plt.xlabel("Time")
+plt.ylabel("Current (pA)")
+plt.show()
 
-    plt.plot(post_drug_time, post_drug)
-    plt.scatter(post_drug_time[peaks_idx_post_drug],
-                post_drug[peaks_idx_post_drug],
-                c="red")
-    plt.title("Post-drug peaks")
-    plt.xlabel("Time")
-    plt.ylabel("Current (pA)")
-    plt.show()
+plt.plot(post_drug_time, post_drug)
+plt.scatter(post_drug_time[peaks_idx_post_drug],
+            post_drug[peaks_idx_post_drug],
+            c="red")
+plt.title("Post-drug peaks")
+plt.xlabel("Time")
+plt.ylabel("Current (pA)")
+plt.show()
 
 # ======================================================================================================================
 # Format Results
