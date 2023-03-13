@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import scipy
 import seaborn as sns
 
-show_all_plots = False
-repo_path = Path("/home/joe/git-repos/swc-timeseries-analysis-course-2023")  #  Path(r"C:\Users\Joe\work\git-repos\swc-timeseries-analysis-course-2023")
+show_all_plots = True
+repo_path = Path("/Users/joeziminski/git_repos/swc-timeseries-analysis-course-2023")  #  Path(r"C:\Users\Joe\work\git-repos\swc-timeseries-analysis-course-2023")
 
 # ======================================================================================================================
 # Load the data
@@ -219,13 +219,13 @@ peaks_idx_pre_drug = scipy.signal.find_peaks(
     pre_drug * -1,
     distance=distance_between_peaks_in_samples,
     height=20,
-    threshold=5
+    prominence=20
 )[0]
 
 peaks_idx_post_drug = scipy.signal.find_peaks(post_drug * -1,
                                               distance=distance_between_peaks_in_samples,
                                               height=20,
-                                              threshold=5)[0]
+                                              prominence=20)[0]
 
 # Plot the results
 # if show_all_plots:
