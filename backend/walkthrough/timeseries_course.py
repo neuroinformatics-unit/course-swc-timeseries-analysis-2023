@@ -213,18 +213,16 @@ if show_all_plots:
 results = {}
 
 # Find the peak indexes
-distance_between_peaks_in_samples = int(0.030 * sampling_rate)  # 30 ms * samples per second
+distance_between_peaks_in_samples = int(0.020 * sampling_rate)  # 30 ms * samples per second
 
 peaks_idx_pre_drug = scipy.signal.find_peaks(
     pre_drug * -1,
     distance=distance_between_peaks_in_samples,
-    height=20,
     prominence=20
 )[0]
 
 peaks_idx_post_drug = scipy.signal.find_peaks(post_drug * -1,
                                               distance=distance_between_peaks_in_samples,
-                                              height=20,
                                               prominence=20)[0]
 
 # Plot the results
